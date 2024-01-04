@@ -145,10 +145,7 @@ public:
             cout << "Input Matrix:" << endl; 
             for (int i = 0; i < InputMatrixSize; ++i) {
                 for (int j = 0; j < InputMatrixSize; ++j) {
-                    if (!(file >> InputMatrix[i][j])) {
-                        cout << "Error reading Input Matrix at position (" << i << ", " << j << ")." << endl;
-                        return;
-                    }
+                    file >> InputMatrix[i][j]; 
                     cout << left<<setw(4)<<InputMatrix[i][j]; 
                 }
                 cout << endl;
@@ -156,12 +153,13 @@ public:
             file.close(); 
             file.open("data.txt", ios::in);  
             while (getline(file, line) && line != "Core Matrix:") {}
-
             // Determine the size of CoreMatrix
             CoreMatrixSize = 0;
             while (getline(file, line) && line != "") {
                 CoreMatrixSize++;
             }
+
+            OutputMatrixSize = InputMatrixSize - CoreMatrixSize + 1; //It will evaluate the OutputMatrixSize based on read Matrices.
 
             // Allocate memory for CoreMatrix
             CoreMatrix = new int* [CoreMatrixSize];
@@ -173,23 +171,18 @@ public:
             file.close();  
             file.open("data.txt", ios::in);  
 
-            // Skip the lines till the header line for Core Matrix
+            // Ignore the lines till the header line for Core Matrix
             while (getline(file, line) && line != "Core Matrix:") {}
 
-            // Read the Core Matrix
             cout << "Core Matrix:" << endl;
             for (int i = 0; i < CoreMatrixSize; ++i) {
                 for (int j = 0; j < CoreMatrixSize; ++j) {
-                    if (!(file >> CoreMatrix[i][j])) {
-                        cout << "Error reading Core Matrix at position (" << i << ", " << j << ")." << endl;
-                        return;
-                    }
-                    cout << left<<setw(4)<<CoreMatrix[i][j];  
+                    file >> CoreMatrix[i][j];   
+                    cout << left<<setw(4)<<CoreMatrix[i][j];   
                 } 
                 cout << endl; 
             }
             file.close(); 
-            OutputMatrixSize = InputMatrixSize - CoreMatrixSize + 1; //It will evaluate the OutputMatrixSize based on read Matrices.
             cout << "Matrices read from data.txt" << endl;  
         }
         else {
